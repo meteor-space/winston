@@ -16,7 +16,7 @@ Need display something with:
 
 First, setup your own `Space.Application` or `Space.Module`. Simple example:
 
-```
+```javascript
 Space.Application.define('MyApp', {
 
   configuration: {
@@ -33,7 +33,7 @@ Space.Application.define('MyApp', {
 ```
 And voila! With few lines - you got not only Winston, but also - default `winston.transports.Console` _transport_ configured by default with options like:
 
-```
+```javascript
 {
   colorize: true,
   prettyPrint: true,
@@ -43,7 +43,7 @@ And voila! With few lines - you got not only Winston, but also - default `winsto
 The key components out here are:
 
 #### Configuration:
-```
+```javascript
   configuration: {
     ...
     log: {
@@ -59,7 +59,7 @@ Now on its own `Space.Logger` behaves just like a simple container without filli
 
 #### Module:
 The heavy lifting of setting up Winston and initializing transports is done here with module:
-```
+```javascript
   requiredModules: [
     'Space.logging.Winston'
   ],
@@ -70,7 +70,7 @@ The heavy lifting of setting up Winston and initializing transports is done here
 ####Configuration:
 There are two ways of configuring additional transports. First one - when `Space.logging.Winston` module is initialized by passing additional transports to apps `configuration` object like:
 
-```
+```javascript
 Space.Application.define('MyApp', {
 
   configuration: {
@@ -101,7 +101,7 @@ On this example default console transport(`winston.transports.Console`) will be 
 
 By using `Space.Application` or `Space.Module` `onInitialize` hook like this:
 
-```
+```javascript
 Space.Application.define('MyApp', {
 
   configuration: {
