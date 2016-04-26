@@ -2,7 +2,7 @@ const winston = Npm.require('winston');
 
 const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter', {
 
-  Constructor: function(transports) {
+  Constructor(transports) {
     let lib = new winston.Logger({
       transports: transports || []
     });
@@ -10,19 +10,19 @@ const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter'
     this.setLib(lib);
   },
 
-  addTransport: function() {
+  addTransport() {
     return this._lib.add.apply(this._lib, arguments);
   },
 
-  removeTransport: function() {
+  removeTransport() {
     return this._lib.remove.apply(this._lib, arguments);
   },
 
-  hasTransport: function(name) {
+  hasTransport(name) {
     return this._lib.transports[transportName] != null;
   },
 
-  setMinLevel: function(transportName, levelName) {
+  setLevel(transportName, levelName) {
     if (!this.hasTransport(transportName)) {
       throw new Error(this.ERRORS.transportNotAdded(transportName));
     }
@@ -30,7 +30,7 @@ const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter'
   },
 
   ERRORS: {
-    transportNotAdded: function(transportName) {
+    transportNotAdded(transportName) {
       return `Winston transport with ${transportName} is not added`;
     }
   }
