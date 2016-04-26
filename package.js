@@ -21,5 +21,7 @@ Package.onUse(function(api) {
   ]);
 
   api.addFiles([
+    'source/server/module.js',
+    'source/server/winston-adapter.js'
   ], 'server');
 });
