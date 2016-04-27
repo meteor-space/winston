@@ -3,7 +3,7 @@ const winston = Npm.require('winston');
 const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter', {
 
   Constructor(transports) {
-    let lib = new winston.Logger({
+    const lib = new winston.Logger({
       transports: transports || []
     });
     lib.setLevels(winston.config.syslog.levels);
@@ -18,15 +18,15 @@ const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter'
     return this._lib.remove.apply(this._lib, arguments);
   },
 
-  hasTransport(name) {
-    return this._lib.transports[transportName] != null;
+  hasTransport(transportName) {
+    return this._lib.transports[transportName] !== null;
   },
 
   setLevel(transportName, levelName) {
     if (!this.hasTransport(transportName)) {
       throw new Error(this.ERRORS.transportNotAdded(transportName));
     }
-    return this._lib.transports[transportName].level = levelName;
+    this._lib.transports[transportName].level = levelName;
   },
 
   ERRORS: {
@@ -36,13 +36,11 @@ const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter'
   }
 });
 
-WinstonAdapter.console = function(options) {
-  if (options == null) {
-    let options = {
-      colorize: true,
-      prettyPrint: true,
-      level: 'info'
-    };
-  }
-  return new winston.transports.Console(options);
+WinstonAdapter.console = (options) => {
+  const mergedOptions = _.extend({}, {
+    colorize: true,
+    prettyPrint: true,
+    level: 'info'
+  }, options);
+  return new winston.transports.Console(mergedOptions);
 };
