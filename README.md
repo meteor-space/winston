@@ -46,6 +46,8 @@ a transport array to suit your requirements.
 _To preserve the default console transport use the `addTransport` method instead_
 
 ```javascript
+const winston = Npm.require('winston');
+
 Space.Application.define('MyApp', {
 
   configuration: {
@@ -56,7 +58,7 @@ Space.Application.define('MyApp', {
         transports: [
           new winston.transports.Console({
             colorize: true,
-            prettyPrint: true
+            prettyPrint: true,
             level: 'debug'
           })
         ]
