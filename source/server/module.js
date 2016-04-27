@@ -7,7 +7,6 @@ Space.Module.define('Space.logging.Winston', {
 
   onInitialize() {
     const log = this.injector.get('log');
-
     const transports = lodash.get(this.configuration, 'log.winston.transports', [
       this._setupWinstonConsoleTransport()
     ]);
@@ -16,12 +15,12 @@ Space.Module.define('Space.logging.Winston', {
     log.addAdapter('winston', adapter);
   },
 
-  _setupWinstonConsoleTransport(options) {
-    const mergedOptions = _.extend({}, {
+  _setupWinstonConsoleTransport() {
+    const options = {
       colorize: true,
       prettyPrint: true,
       level: 'info'
-    }, options);
-    return Space.Logger.WinstonAdapter.console(mergedOptions);
+    };
+    return Space.Logger.WinstonAdapter.console(options);
   }
 });
