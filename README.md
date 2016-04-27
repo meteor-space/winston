@@ -1,11 +1,15 @@
 # Space.logging.Winston
-**Adds Winston logger(<https://github.com/winstonjs/winston>) adapter for Space.Logger**
+_A production-grade logging adapter for [Space](http://www.github.com/meteor-space)_
 
-Wouldn't be nice to be able to use most of current top-notch logging platforms out with just snap of a finger(or few...)? This is where Winston comes in to play. You can use whatever logging _transport_(storage device) you wish that is currently supported by Winston or many additional - done by community.
+This package adds a custom [Winston](https://github.com/winstonjs/winston) logger instance, that can be configured with your [Transport](https://github.com/winstonjs/winston/blob/master/docs/transports.md) of your choice via Space.Module configuration or dynamically using a simple API. It also sets up a [winston.transports.Console](https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport) transport to log `info` messages if no custom transports are provided.
 
-Need display something with:
+##Why winston?
 
-* console? Use: `winston.transports.Console` <https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport>
+Winston is a powerful library, and has a vibrant ecosystem with core and community driven extensions including support for most logging services:
+
+> Winston is designed to be a simple and universal logging library with support for multiple transports. A transport is essentially a storage device for your logs. Each instance of a winston logger can have multiple transports configured at different levels. For example, one may want error logs to be stored in a persistent remote location (like a database), but all logs output to the console or a local file.
+
+>There also seemed to be a lot of logging libraries out there that coupled their implementation of logging (i.e. how the logs are stored / indexed) to the API that they exposed to the programmer. This library aims to decouple those parts of the process to make it more flexible and extensible.
 
 ## Installation
 `meteor add space:winston`
@@ -14,7 +18,7 @@ Need display something with:
 
 ## Setup
 
-First, setup your own `Space.Application` or `Space.Module`. Simple example:
+First, define the following configuration options your app's module configuration:
 
 ```javascript
 Space.Application.define('MyApp', {
@@ -22,7 +26,7 @@ Space.Application.define('MyApp', {
   configuration: {
     appId: 'MyApp'
     log: {
-      enabled: true
+      enabled: true // global switch to enable or disable logging
     }
   },
 
@@ -31,46 +35,20 @@ Space.Application.define('MyApp', {
   ],
 });
 ```
-And voila! With few lines - you got not only Winston, but also - default `winston.transports.Console` _transport_ configured by default with options like:
+And voila! This has enabled logging with the [built-in winston.transports.Console transport](source/server/winston-adaptor.js#L39), logging the `info` level and up.
+
+The purpose of this default is to provide a fast way to get going, but you may wish to have more control, such as what level logs to the console. This is achieved by defining your own transport, which gives you full control.
+
+## Custom transports
+
+### Using Module Configuration
+Explicitly define an array of transports to suit your requirements
+
+_To preserve the default console transport use the `addTransport` method instead_
 
 ```javascript
-{
-  colorize: true,
-  prettyPrint: true,
-  level: 'info'
-}
-```
-The key components out here are:
+const winston = Npm.require('winston');
 
-#### Configuration:
-```javascript
-  configuration: {
-    ...
-    log: {
-      enabled: true
-    }
-  },
-```
-Adding `log` object with property `enabled: true` enables logging with our `Space.Logger` provided by `space:base` package.
-
-**Its crucial part, without it - `Space.Logger` no logs shall pass(winky face) through any logs to added libraries(adapters).**
-
-Now on its own `Space.Logger` behaves just like a simple container without filling it up with additional logging libraries using _adapters_.
-
-#### Module:
-The heavy lifting of setting up Winston and initializing transports is done here with module:
-```javascript
-  requiredModules: [
-    'Space.logging.Winston'
-  ],
-```
-
-## Adding new transports
-
-####Configuration:
-There are two ways of configuring additional transports. First one - when `Space.logging.Winston` module is initialized by passing additional transports to apps `configuration` object like:
-
-```javascript
 Space.Application.define('MyApp', {
 
   configuration: {
@@ -81,7 +59,7 @@ Space.Application.define('MyApp', {
         transports: [
           new winston.transports.Console({
             colorize: true,
-            prettyPrint: true
+            prettyPrint: true,
             level: 'debug'
           })
         ]
@@ -93,13 +71,9 @@ Space.Application.define('MyApp', {
   ],
 });
 ```
-On this example default console transport(`winston.transports.Console`) will be replaced with our own instance configured to our needs.
 
-**Adding any additional transport by `configuration` - will remove default console transport. If you wish to preserve console transport: just add it to  `configuration.log.winston.transports` array.**
-
-####Initialization hooks
-
-By using `Space.Application` or `Space.Module` `onInitialize` hook like this:
+#### adaptor.addTransport(transportClass, config)
+The example below uses a module lifecycle hook to _add_ a transport, preserving the default. This provides the most flexibility, including dynamic config based on the environment.
 
 ```javascript
 Space.Application.define('MyApp', {
@@ -107,18 +81,10 @@ Space.Application.define('MyApp', {
   configuration: {
     appId: 'MyApp'
     log: {
-      enabled: true,
-      winston: {
-        transports: [
-          new winston.transports.Console({
-            colorize: true,
-            prettyPrint: true
-            level: 'debug'
-          })
-        ]
-      }
+      enabled: true
     }
   }
+  
   requiredModules: [
     'Space.logging.Winston'
   ],
@@ -131,7 +97,7 @@ Space.Application.define('MyApp', {
       prettyPrint: false,
       level: 'debug'
     });
-  },
+  }
 
 });
 ```
