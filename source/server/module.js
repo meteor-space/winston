@@ -7,9 +7,11 @@ Space.Module.define('Space.logging.Winston', {
 
   onInitialize() {
     const log = this.injector.get('log');
-    const transports = lodash.get(this.configuration, 'log.winston.transports', [
-      this._setupWinstonConsoleTransport()
-    ]);
+    let transports = lodash.get(this.configuration, 'log.winston.transports', []);
+    if (lodash.isEmpty(transports)) {
+      transports = [this._setupWinstonConsoleTransport()]
+    }
+
     const adapter = new Space.Logger.WinstonAdapter(transports);
     this.injector.map('Space.Logger.WinstonAdapter').toStaticValue(adapter);
     log.addAdapter('winston', adapter);
