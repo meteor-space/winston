@@ -26,7 +26,7 @@ Space.Application.define('MyApp', {
   configuration: {
     appId: 'MyApp'
     log: {
-      enabled: true // This is the global switch to enable or disable logging
+      enabled: true // global switch to enable or disable logging
     }
   },
 
@@ -35,13 +35,14 @@ Space.Application.define('MyApp', {
   ],
 });
 ```
-And voila! This has enabled logging with the [built-in winston.transports.Console transport](source/server/winston-adaptor.js#L39), logging the `info` level and up. The purpose of this default is to provide a fast way to get going, but you may wish to have more control, such as what level logs to the console. This is achieved by defining your own transport, which gives you full control.
+And voila! This has enabled logging with the [built-in winston.transports.Console transport](source/server/winston-adaptor.js#L39), logging the `info` level and up.
+
+The purpose of this default is to provide a fast way to get going, but you may wish to have more control, such as what level logs to the console. This is achieved by defining your own transport, which gives you full control.
 
 ## Custom transports
 
 ### Using Module Configuration
-This is the recommended approach, giving you expected results by explicitly defining
-a transport array to suit your requirements.
+Explicitly define an array of transports to suit your requirements
 
 _To preserve the default console transport use the `addTransport` method instead_
 
@@ -71,13 +72,8 @@ Space.Application.define('MyApp', {
 });
 ```
 
-
-
-
-
 #### adaptor.addTransport(transportClass, config)
-
-The example below uses a module lifecycle hook to _add_ a transport, preserving the default. This provides the most flexibility if static configuration is limiting.
+The example below uses a module lifecycle hook to _add_ a transport, preserving the default. This provides the most flexibility, including dynamic config based on the environment.
 
 ```javascript
 Space.Application.define('MyApp', {
