@@ -1,3 +1,5 @@
+const winston = Npm.require('winston');
+
 Space.Module.define('Space.logging.Winston', {
 
   dependencies: {
@@ -12,7 +14,7 @@ Space.Module.define('Space.logging.Winston', {
       transports = [this._setupWinstonConsoleTransport()]
     }
 
-    const adapter = new Space.Logger.WinstonAdapter(transports);
+    const adapter = new Space.Logger.WinstonAdapter(winston, transports);
     this.injector.map('Space.Logger.WinstonAdapter').toStaticValue(adapter);
     log.addAdapter('winston', adapter);
   },
@@ -23,6 +25,6 @@ Space.Module.define('Space.logging.Winston', {
       prettyPrint: true,
       level: 'info'
     };
-    return Space.Logger.WinstonAdapter.console(options);
+    return new winston.transports.Console(options);
   }
 });

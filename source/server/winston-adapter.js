@@ -1,8 +1,9 @@
-const winston = Npm.require('winston');
-
 const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter', {
 
-  Constructor(transports) {
+  Constructor(winston, transports) {
+    if (!winston) {
+      throw new Error(this.ERRORS.winstonMissing)
+    }
     const lib = new winston.Logger({
       transports: transports || []
     });
@@ -18,29 +19,32 @@ const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter'
     return this._lib.remove.apply(this._lib, arguments);
   },
 
-  hasTransport(transportName) {
-    return this._lib.transports[transportName] !== null;
+  hasTransport(name) {
+    return this._lib.transports[name] !== null &&
+    this._lib.transports[name] !== undefined;
+  },
+
+  transport(name) {
+    return this._lib.transports[name] || null;
+  },
+
+  transports() {
+    return this._lib.transports;
   },
 
   setLevel(transportName, levelName) {
     if (!this.hasTransport(transportName)) {
-      throw new Error(this.ERRORS.transportNotAdded(transportName));
+      throw new Error(this.ERRORS.transportNotFound(transportName));
     }
     this._lib.transports[transportName].level = levelName;
   },
 
   ERRORS: {
-    transportNotAdded(transportName) {
-      return `Winston transport with ${transportName} is not added`;
+    winstonMissing() {
+      return 'Winston library must be provided as first constructor argument';
+    },
+    transportNotFound(transportName) {
+      return `Winston transport with name ${transportName} is not added`;
     }
   }
 });
-
-WinstonAdapter.console = (options) => {
-  const mergedOptions = _.extend({}, {
-    colorize: true,
-    prettyPrint: true,
-    level: 'info'
-  }, options);
-  return new winston.transports.Console(mergedOptions);
-};
