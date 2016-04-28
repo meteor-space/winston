@@ -12,7 +12,7 @@ Npm.depends({
 
 Package.onUse(function(api) {
 
-  api.versionsFrom('1.2.0.1');
+  api.versionsFrom('1.2.1');
 
   api.use([
     'ecmascript',
@@ -24,4 +24,20 @@ Package.onUse(function(api) {
     'source/server/module.js',
     'source/server/winston-adapter.js'
   ], 'server');
+});
+
+
+Package.onTest(function(api) {
+
+  api.use([
+    'ecmascript',
+    'space:winston',
+    'practicalmeteor:munit@2.1.5',
+    'space:testing@3.0.1'
+  ]);
+
+  api.add_files([
+    'tests/unit/winston-adapter.unit.js',
+  ], 'server');
+
 });
