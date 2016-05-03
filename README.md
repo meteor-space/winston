@@ -1,5 +1,6 @@
-# Space.logging.Winston
-_A production-grade logging adapter for [Space](http://www.github.com/meteor-space)_
+# space:winston [![Circle CI](https://circleci.com/gh/meteor-space/winston.svg?style=svg)](https://circleci.com/gh/meteor-space/winston)
+
+**A production-grade logging adapter for [Space](http://www.github.com/meteor-space)**
 
 This package adds a custom [Winston](https://github.com/winstonjs/winston) logger instance, that can be configured with your [Transport](https://github.com/winstonjs/winston/blob/master/docs/transports.md) of your choice via Space.Module configuration or dynamically using a simple API. It also sets up a [winston.transports.Console](https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport) transport to log `info` messages if no custom transports are provided.
 
@@ -101,6 +102,17 @@ Space.Application.define('MyApp', {
 
 });
 ```
+
+## Contributing
+In lieu of a formal styleguide, take care to maintain the existing coding style.
+- Add unit / integration tests for any new or changed functionality.
+- We use [git-flow](https://github.com/nvie/gitflow) so always branch from and target _develop_, which is the upcoming release of the package.
+
+[git-flow Cheat Sheet](http://danielkummer.github.io/git-flow-cheatsheet/)
+[A successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/)
+
+## Run the tests
+`./test.sh`
 
 ## Release History
 You can find the complete release history in the
