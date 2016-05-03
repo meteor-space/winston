@@ -38,7 +38,7 @@ Package.onTest(function(api) {
 
   api.add_files([
     'tests/unit/winston-adapter.unit.js',
-    'tests/integration/module.integration.js',
+    'tests/integration/module.integration.js'
   ], 'server');
 
 });

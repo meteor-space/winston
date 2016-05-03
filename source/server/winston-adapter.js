@@ -2,7 +2,7 @@ const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter'
 
   Constructor(winston, transports) {
     if (!winston) {
-      throw new Error(this.ERRORS.winstonMissing)
+      throw new Error(this.ERRORS.winstonMissing);
     }
     const lib = new winston.Logger({
       transports: transports || []
