@@ -17,7 +17,7 @@ Package.onUse(function(api) {
   api.use([
     'ecmascript',
     'stevezhu:lodash@4.11.1',
-    'space:base@4.1.3'
+    'space:base@4.1.4'
   ]);
 
   api.addFiles([

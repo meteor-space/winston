@@ -17,8 +17,8 @@ describe("Space.Logger.WinstonAdapter", () => {
     this.winston.Logger = sinon.spy(Logger);
   });
 
-  it('extends Space.Logger.Adapter', () => {
-    expect(Space.Logger.WinstonAdapter).to.extend(Space.Logger.Adapter);
+  it('extends Space.Logger.LoggingAdapter', () => {
+    expect(Space.Logger.WinstonAdapter).to.extend(Space.Logger.LoggingAdapter);
   });
 
   describe('construction', () => {

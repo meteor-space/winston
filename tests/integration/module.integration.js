@@ -48,7 +48,7 @@ describe("Space.logging.WinstonAdapter", () => {
               }
             }
           },
-          requiredModules: ['Space.logging.Winston'],
+          requiredModules: ['Space.logging.Winston']
         });
         const app = new TestApp();
         app.start();
