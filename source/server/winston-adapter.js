@@ -1,4 +1,4 @@
-const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter', {
+const WinstonAdapter = Space.Logger.LoggingAdapter.extend('Space.Logger.WinstonAdapter', {
 
   Constructor(winston, transports) {
     if (!winston) {
@@ -8,7 +8,7 @@ const WinstonAdapter = Space.Logger.Adapter.extend('Space.Logger.WinstonAdapter'
       transports: transports || []
     });
     lib.setLevels(winston.config.syslog.levels);
-    this.setLib(lib);
+    Space.Logger.LoggingAdapter.call(this, lib);
   },
 
   addTransport() {
